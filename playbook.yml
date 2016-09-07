@@ -19,6 +19,9 @@
 - name: odoo nginx
   hosts: odoo-test
   tasks:
+    - name: Set hostname
+      hostname: name=odoo.studio38.de
+
     - name: Install system packages
       apt: pkg={{ item }} update-cache=yes
       with_items:
