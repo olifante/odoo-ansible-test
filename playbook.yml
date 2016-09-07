@@ -1,0 +1,6 @@
+- name: odoo
+  hosts: odoo
+  roles:
+    - ANXS.postgresql
+  vars:
+    - postgresql_version: 9.3
