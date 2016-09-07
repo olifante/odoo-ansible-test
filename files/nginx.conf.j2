@@ -1,0 +1,9 @@
+upstream backend-odoo {
+    server 127.0.0.1:8069;
+}
+
+server {
+    location / {
+        proxy_pass http://backend-odoo;
+    }
+}
