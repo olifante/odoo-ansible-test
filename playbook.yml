@@ -16,16 +16,17 @@
     - odoo_version: 9.0
     - odoo_config_unaccent: True
 
-- name: odoo nginx
+- name: nginx and postfix
   hosts: odoo-test
   tasks:
     - name: Set hostname
-      hostname: name=odoo.studio38.de
+      hostname: name=odoodemo.studio38.de
 
     - name: Install system packages
       apt: pkg={{ item }} update-cache=yes
       with_items:
         - nginx
+        - postfix
 
     - name: Set timezone variables
       copy: content='Europe/Berlin\n'
@@ -48,9 +49,25 @@
     - name: make sure nginx server is running
       service: name=nginx state=started enabled=yes
 
+    - name: Set Postfix option hostname
+      debconf: name=postifx question="postfix/mailname" value="{{ ansible_fqdn }}" vtype="string"
+      notify: restart postfix
+
+    - name: Set Postfix option type as internet site
+      debconf: name=postfix question="postfix/main_mailer_type" value="'Internet Site'" vtype="string"
+      notify: restart postfix
+
+    - name: Copy postfix config
+      template: src=files/main.cf.j2 dest=/etc/postfix/main.cf
+      notify: restart postfix
+
+
   handlers:
     - name: update timezone
       command: dpkg-reconfigure --frontend noninteractive tzdata
 
     - name: restart nginx
       service: name=nginx state=restarted
+
+    - name: restart postfix
+      service: name=postfix state=restarted
