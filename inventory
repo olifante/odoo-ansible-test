@@ -1,2 +1,2 @@
-odoo-test    ansible_ssh_host=46.101.98.210 ansible_ssh_user=root ansible_ssh_private_key_file=~/.ssh/digitalocean_rsa
+odoo-test    ansible_ssh_host=139.59.143.229 ansible_ssh_user=root ansible_ssh_private_key_file=~/.ssh/digitalocean_rsa
 
