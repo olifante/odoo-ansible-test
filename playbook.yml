@@ -29,12 +29,10 @@
         - postfix
 
     - name: Set timezone variables
-      copy: content='Europe/Berlin\n'
-            dest=/etc/timezone
-            owner=root
-            group=root
-            mode=0644
-            backup=yes
+      file: dest=/etc/localtime
+            src=/usr/share/zoneinfo/Europe/Berlin
+            state=link
+            force=yes
       notify:
         - update timezone
 
